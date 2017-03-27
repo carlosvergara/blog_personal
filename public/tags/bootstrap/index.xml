@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bootstrap on Carlos Vergara-Hernández</title>
+    <link>/tags/bootstrap/index.xml</link>
+    <description>Recent content in Bootstrap on Carlos Vergara-Hernández</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>es-es</language>
+    <copyright>&amp;copy; 2017 Carlos Vergara-Hernández</copyright>
+    <atom:link href="/tags/bootstrap/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>LOESS y bootstrap</title>
+      <link>/post/loess/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/loess/</guid>
+      <description>&lt;p&gt;En una de las asignaturas del máster que &lt;a href=&#34;http://masterbioestadistica.com/&#34; title=&#34;Máster en bioestadística&#34; target=&#34;_blank&#34;&gt;estoy estudiando&lt;/a&gt; (concretamente: modelos de suavizado, aditivos y mixtos) nos pidieron que investigáramos acerca de la generación de un intervalo de confianza al 95 % para un ajuste LOESS, y que este se originase mediante remuestreo &lt;em&gt;bootstrap&lt;/em&gt;. Gracias a eso me topé con una idea que me ha gustado mucho: generar un porrón de curvas y, en lugar de calcular un error estándar al que multiplicar por 1.96 para hallar el IC (asumiendo normalidad, algo bastante arriesgado), quedarse con los cuantiles 0.025 y 0.975 de los ajustes a modo de las bandas inferior y superior de un IC al 95 %. Como me gustó la idea, he pensado en colgar el código con un ejemplo.&lt;/p&gt;
+
+&lt;p&gt;Aunque en la tarea se nos dirigía hacia la base de datos &lt;code&gt;geyser&lt;/code&gt; de la librería &lt;code&gt;MASS&lt;/code&gt;, aquí voy a generar unos datos con una asociación no lineal:&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+set.seed(1)
+x &amp;lt;- rnorm(100, 0, 6)
+y &amp;lt;- x^2 + x^3 - rnorm(length(x), 10, 200)
+xy &amp;lt;- data.frame(x, y)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Sobre estos datos ya se puede ajustar una regresión local (LOESS) con las opciones que &lt;code&gt;R&lt;/code&gt; aplica por defecto, a saber: polinomio de segundo grado, familia gausiana y ancho de banda de 0.75. Para ello se emplea una única línea de código:&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+mi.loess &amp;lt;- loess(y ~ x, xy)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Y ya le llegó la hora al &lt;em&gt;bootstrap&lt;/em&gt;. En primer lugar cargamos la librería &lt;code&gt;boot&lt;/code&gt; &amp;mdash;aunque hay otras librerías, he decidido emplear esta al acompañar a la instalación base de &lt;code&gt;R&lt;/code&gt; (puedes consultar algo de ayuda en relación a la librería y a la técnica &lt;a href=&#34;http://www.burns-stat.com/documents/tutorials/the-statistical-bootstrap-and-other-resampling-methods-2/&#34; target=&#34;_blank&#34;&gt;aquí&lt;/a&gt;, &lt;a href=&#34;http://www.ats.ucla.edu/stat/r/library/bootstrap.htm&#34; target=&#34;_blank&#34;&gt;aquí&lt;/a&gt; y también &lt;a href=&#34;http://www.statmethods.net/advstats/bootstrapping.html&#34; target=&#34;_blank&#34;&gt;aquí&lt;/a&gt;) &amp;mdash;.&lt;/p&gt;
+
+&lt;p&gt;Para los que no lo sepan, el &lt;em&gt;bootstrap&lt;/em&gt; se puede resumir como una técnica que consiste en sacar un número de nuevos conjuntos de datos mediante un &lt;strong&gt;muestreo aleatorio con reemplazo&lt;/strong&gt; aplicado sobre el conjunto original, sobre los cuales se calculará un estadístico, que en este caso es un ajuste de regresión. Como resultado, se tiene un montón de ajustes (tantos como remuestreos se hayan realizado), y estos ajustes son muy útiles para, p. ej., calcular un IC.&lt;/p&gt;
+
+&lt;p&gt;Como mejor se ve es en la práctica. Ahora que ya dispongo de unos datos ajustados (objeto &lt;code&gt;mi.loess&lt;/code&gt;), voy a crear una matriz, a la que llamaré &lt;code&gt;dat.res.aj&lt;/code&gt;, que contenga los datos originales, los ajustados y los residuos. A continuación se crea un &lt;code&gt;data.frame&lt;/code&gt; llamado &lt;code&gt;nuevos.datos&lt;/code&gt; compuesto por, p. ej., 100 valores desde el mínimo de la variable predictora hasta su máximo ($\approx$ [-13.29, 14.41]): su papel reside como base para la función &lt;code&gt;predict&lt;/code&gt;, la cual se nutre de un &lt;code&gt;data.frame&lt;/code&gt; de nuevos valores para las variables independientes (aunque en este caso solo hay una) a los que aplicarles los distintos ajustes y predecir valores para la variable dependiente. Para finalizar con los preliminares, se genera el estadístico que se va a emplear en el &lt;em&gt;bootstrap&lt;/em&gt; (una función bautizada como &lt;code&gt;boot.loess&lt;/code&gt;). Ahora ya se está en condiciones de ejecutar el remuestreo, cuyo resultado se asignará a un objeto llamado &lt;code&gt;mi.boot&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+library(boot)
+dat.res.aj &amp;lt;- cbind(xy, res = mi.loess$residuals, ajus = mi.loess$fitted)
+nuevos.datos &amp;lt;- data.frame(x = seq(min(xy$x), max(xy$x), l = 100))
+boot.loess &amp;lt;- function(datos, nuevosdatos, inds, alpha = 0.75) {
+  aj.loess &amp;lt;- loess(ajus + res[inds] ~ x, span = alpha, data = datos)
+  pred &amp;lt;- predict(aj.loess, nuevosdatos)
+  return(pred)
+}
+mi.boot &amp;lt;- boot(data = dat.res.aj, statistic = boot.loess,
+  R = 1000, nuevosdatos = nuevos.datos)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Ya se ha realizado el remuestreo, pero ¿qué aspecto tiene el ajuste sobre los datos originales en comparación con las 1000 muestras &lt;em&gt;bootstrap&lt;/em&gt;? Vamos a averiguarlo: en primer lugar hay que visualizar el ajuste LOESS sobre los datos originales junto con el ajuste de una regresión lineal simple (a modo de comparación); después se dibujan los 1000 ajustes realizados sobre las muestras &lt;em&gt;bootstrap&lt;/em&gt;; y finalmente se selecciona a los cuantiles 0.025 y 0.975 de los ajustes del remuestreo, como los límites inferior y superior de un IC al 95 %. El código para todo esto lo explicará mejor&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+layout(matrix(c(1,3,2,3), 2))
+par(mar = c(3, 3, 3, 1), mgp = c(3.5, 1, 0), oma = c(2, 2, 0, 0), bty = &amp;lsquo;l&amp;rsquo;, xaxs = &amp;lsquo;i&amp;rsquo;, yaxs = &amp;lsquo;i&amp;rsquo;)
+with(xy, plot(x, y, xlim = c(-15, 15), ylim = c(-3000, 3000), pch = 19, las = 1, xlab = &amp;ldquo;,
+              ylab = &amp;ldquo;, main = &amp;lsquo;Ajuste sobre los datos originales&amp;rsquo;))
+ajuste &amp;lt;- predict(mi.loess, nuevos.datos)
+lines(nuevos.datos$x, ajuste, lty = 1); with(xy, abline(lm(y ~ x), lty = 2))
+legend(&amp;lsquo;topleft&amp;rsquo;, legend = c(&amp;lsquo;Ajuste LOESS&amp;rsquo;, &amp;lsquo;Ajuste lineal&amp;rsquo;), lty = c(1, 2), bty = &amp;lsquo;n&amp;rsquo;)
+with(xy, plot(x, y, xlim = c(-15, 15), ylim = c(-3000, 3000), pch = 19, las = 1, xlab = &amp;ldquo;,&lt;br /&gt;
+                  ylab = &amp;ldquo;, main = &amp;lsquo;Ajuste sobre 1000 muestras bootstrap&amp;rsquo;))
+apply(mi.boot$t, 1, function(x){
+  lines(nuevos.datos$x, x, col = 4)
+  })
+with(xy, plot(x, y, xlim = c(-15, 15), ylim = c(-3000, 3000), pch = 19, las = 1, xlab = &amp;ldquo;,&lt;br /&gt;
+              ylab = &amp;ldquo;, main = &amp;lsquo;Ajuste LOESS con IC 95 % mediante bootstrap&amp;rsquo;))
+lines(nuevos.datos$x, ajuste)
+sapply(c(0.025, 0.975), function(x) {
+  lines(nuevos.datos$x, apply(mi.boot$t, 2, quantile, probs = x), lty = 2, col = 4)
+  })
+mtext(side = 1, text = &amp;ldquo;Variable X&amp;rdquo;, line = 0, outer = T)
+mtext(side = 2, text = &amp;ldquo;Variable Y&amp;rdquo;, line = 0.5, outer = T, las = 0)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;figure&gt;
+    &lt;img src=&#34;/images/icloess/plot-1.jpg&#34; alt=&#34;image&#34;&gt;
+    &lt;figcaption&gt;Ajuste sobre los datos originales, sobre todos los remuestros bootstrap y selección de un IC 95 % para el ajuste original.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Y ya está todo. Como se puede ver, el ajuste lineal no es capaz de captar la variación de los datos, en tanto que el ajuste LOESS se adapta mucho mejor. Respecto al IC 95 % mediante &lt;em&gt;bootstrap&lt;/em&gt;, y al no haber mucho ruido en los datos, los ajustes de las 1000 muestras con reemplazo no sugieren grandes discrepancias respecto al ajuste inicial, lo cual se puede ver fácilmente al representar las bandas superior e inferior del IC y observar su proximidad.&lt;/p&gt;
+
+&lt;p&gt;Pasa un buen día. :)&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;También se puede realizar una representación gráfica con la increíble librería &lt;a href=&#34;http://docs.ggplot2.org/current/&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;ggplot2&lt;/code&gt;&lt;/a&gt;: ya tengo faena para un próximo artículo.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;^&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

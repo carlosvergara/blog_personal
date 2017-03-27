@@ -1,0 +1,203 @@
+---
+title: Informes dinámicos con knitr
+date: 2015-05-07
+categories: ["R"]
+tags: ["R", "knitr", "R Markdown"]
+comments: true
+share: true
+---
+
+
+<p>Hola muchachada.</p>
+<p>Hoy la palangana viene repleta de… informes, ha oído usted bien (popularidad a tope).</p>
+<div id="erase-una-vez-algo-llamado-ciencia" class="section level2">
+<h2>Érase una vez… algo llamado ciencia</h2>
+<p>Pues eso, que esto de la ciencia está bastante bien. En serio, hay un punto en el que, tras hacer un par de análisis inspirados detectas un patrón y te viene un subidón de la hostia. A ver, no me malinterpetes, rara vez esa sensación acaba en algo mínimamente productivo, aunque la sensación mola.</p>
+<p>Bien, pues ahora empiezan a aparecer problemas, porque por si no lo sabías, esto de la ciencia parece ser que es algo colectivo</p>
+<p>Hasta hace bien poco, preparar un informe con las salidas de un análisis estadístico se me hacía poco menos que un castigo: sentía que mi dedicación caía en saco roto cada vez que había que realizar cambios en él tras pasar el primer panel de revisión, lo cual ocurre siempre. No obstante, eso fue hasta que me topé con la librería <code>knitr</code> de <code>R</code> (la cual es, sencillamente, maravillosa): ahora, mis informes salen al vuelo y no me importa nada si se añaden, retiran o editan variables de la base de datos o análisis estadísticos: el informe se actualizará fácilmente y quedará bien, sí o sí.</p>
+</div>
+<div id="manejo-de-knitr" class="section level2">
+<h2>Manejo de <code>knitr</code></h2>
+<p>Tras las buenas palabras de presentación, veamos qué ofrece <code>knitr</code>. Según la documentación, se trata de una herramienta genérica para generar informes dinámicos con <code>R</code>, y aunque suene un poco raro, esto implica dos frentes, así habrá que discutirlos algo más en profundidad.</p>
+<div id="a-hostias-con-el-informe" class="section level4">
+<h4>A hostias con el informe</h4>
+<p>Pongámonos en situación: has realizado un análisis estadístico sobre una base de datos y estás preparando el informe. Te pasas varias horas (o días, en función de la base de datos) copiando y pegando tablas y gráficos o, mucho peor, sufriendo la alienación que supone escribir todos los valores a mano. Tras ello, le llega el turno a la maquetación para que todo sea bonito y el informe solo necesite un lacito para ser enviado a quien corresponda, y esto también requiere un gran esfuerzo.</p>
+<p>Sin embargo, es habitual que a alguien se le ocurra algo que puede mejorar el análisis y el producto final, aunque solo con pensar en pasar una vez más por todo el proceso de <em>copia-pega</em> por un cambio mínimo, puede amargarte tras de tanta dedicación. Y lo peor es que todo empieza con buenas intenciones y algo parecido a: <strong>y si…</strong> <em>recodificamos esta variable</em>, <strong>y si…</strong> <em>en tal modelo probamos a introducir un factor aleatorio y vemos cómo quedan los residuos</em> o, en el peor de los casos, <strong>y si…</strong> <em>repetimos este análisis pero haciendo el pino mientras recitamos el Quijote</em>.</p>
+<p>¿Alguna vez te ha pasado? Amigo investigador: no estás solo, y es precisamente ahí donde los informes dinámicos pueden sacarnos del apuro. La idea es muy simple: integrar trozos de código de análisis y las salidas de <code>R</code> que producen (tanto texto como gráficos) en el informe que se esté preparando, de una manera natural y bastante fácil. ¿Tras la revisión de los compañeros se plantean cambios en el análisis? No pasa nada: al tener el código integrado el informe se genera de nuevo automáticamente con el código y las salidas actualizadas. Esto, que en principio parece poco relevante, implica que solo has de concentrarte en tu investigación: pensar en la mejor forma de análisis y en la interpretación de los resultados.</p>
+</div>
+<div id="herramienta-generica" class="section level4">
+<h4>Herramienta genérica</h4>
+<p>En <code>R</code> ya existía una librería para realizar informes dinámicos, pero estaba orientada exclusivamente a LaTeX. Con <code>knitr</code> se pueden crear elementos en LaTeX, Markdown o HTML (y de ahí podemos pasarlos con <a href="http://pandoc.org/">Pandoc</a> a un editor de textos del tipo <em>WYSIWYG</em> como <a href="https://www.libreoffice.org/discover/writer/">LO Writer</a> o MS Word). Además, si a esto le añadimos las facilidades que ofrece <a href="http://www.rstudio.com/">RStudio</a> a la hora de trabajar con <code>R</code> y <code>knitr</code>, las posibilidades son increíbles (incluyendo presentaciones con un acabado sensacional con <a href="http://rmarkdown.rstudio.com/ioslides_presentation_format.html"><em>ioslides</em></a>, <a href="http://rmarkdown.rstudio.com/slidy_presentation_format.html"><em>slidy</em></a> o <a href="http://rmarkdown.rstudio.com/beamer_presentation_format.html"><em>beamer</em></a>).</p>
+</div>
+</div>
+<div id="trabajando-en-markdown" class="section level2">
+<h2>Trabajando en Markdown</h2>
+<p>A la hora de escribir documentos que no requieran un manejo muy avanzado, <a href="http://stackoverflow.com/editing-help">Markdown</a> es sin duda la elección —p. ej., y sin ir más lejos, todo lo que escribo en esta web está escrito en <a href="https://github.com/carlosvergara/carlosvergara.github.io/tree/master/_Rmd">Markdown directamente desde RStudio</a> (el cual ofrece la posibilidad de conectar con <a href="https://github.com/">Github</a>)—.</p>
+<p>Al trabajar con <code>knitr</code> en este entorno, en primer lugar hay que identificar los trozos de código, y para ello escribimos <code>```{r}</code>, indicando que comienza código, y <code>```</code> para indicar el final de la pieza de código. En la <a href="http://yihui.name/knitr/">web del autor de <code>knitr</code></a> podrás encontrar un montón de ejemplos y de opciones útiles para obtener la salida deseada: p. ej., imagina que deseas mostrar únicamente un resultado y omitir el código, pues la solución es añadir <code>echo = F</code> en el encabezado (<code>```{r echo = F}</code>); o que deseas que la figura que se produzca con un <code>plot(x)</code> tenga un tamaño de 10 x 5, pues <code>```{r fig.width = 10, fig.height = 5}</code>. Como ves, la sintaxis es muy sencilla y bastante intuitiva.</p>
+<div id="un-ejemplo" class="section level4">
+<h4>Un ejemplo</h4>
+<p>En primer lugar crearemos una base de datos ficticia (tres tratamientos para, p. ej., el exceso de colesterol) y se describirá la variable dependiente en función de la independiente<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>.</p>
+<pre class="r"><code>library(knitr)
+library(dplyr)
+set.seed(1)
+example &lt;- data.frame(
+  trat = gl(3, 100, labels = c(&#39;Trat. 1&#39;, &#39;Trat. 2&#39;, &#39;Trat. 3&#39;)),
+  chol = as.vector(sapply(c(200, 160, 210), function(x) {
+    rnorm(100, mean = x, sd = x/10)
+    }))
+)
+
+mi_summary_table &lt;- example %&gt;%
+  group_by(Tratamiento = trat) %&gt;%
+  summarise(N = n(),
+            Media = mean(chol),
+            SD = sd(chol),
+            Mediana = median(chol),
+            P25 = quantile(chol, 0.25),
+            P75 = quantile(chol, 0.75),
+            IQR = IQR(chol))
+
+kable(mi_summary_table, digits = 2, caption = &#39;Descriptiva según tratamiento&#39;, align = &quot;c&quot;)  </code></pre>
+<table>
+<caption><span id="tab:tabla">Table 1: </span>Descriptiva según tratamiento</caption>
+<thead>
+<tr class="header">
+<th align="center">Tratamiento</th>
+<th align="center">N</th>
+<th align="center">Media</th>
+<th align="center">SD</th>
+<th align="center">Mediana</th>
+<th align="center">P25</th>
+<th align="center">P75</th>
+<th align="center">IQR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Trat. 1</td>
+<td align="center">100</td>
+<td align="center">202.18</td>
+<td align="center">17.96</td>
+<td align="center">202.28</td>
+<td align="center">190.12</td>
+<td align="center">213.83</td>
+<td align="center">23.72</td>
+</tr>
+<tr class="even">
+<td align="center">Trat. 2</td>
+<td align="center">100</td>
+<td align="center">159.40</td>
+<td align="center">15.33</td>
+<td align="center">157.16</td>
+<td align="center">149.58</td>
+<td align="center">168.01</td>
+<td align="center">18.43</td>
+</tr>
+<tr class="odd">
+<td align="center">Trat. 3</td>
+<td align="center">100</td>
+<td align="center">210.62</td>
+<td align="center">21.72</td>
+<td align="center">209.97</td>
+<td align="center">200.44</td>
+<td align="center">224.67</td>
+<td align="center">24.23</td>
+</tr>
+</tbody>
+</table>
+<p>¿Has visto qué sencillez? Al combinar las capacidades para jugar con los datos de <code>dplyr</code> y las posibilidades que ofrece <code>knitr</code>, el resultado es una pasada. Vamos a ver qué tal se defiende con unos gráficos en <code>ggplot2</code>, por ejemplo con un diagrama de cajas y un gráfico de densidades.</p>
+<pre class="r"><code>library(ggplot2)
+library(grid)
+library(gridExtra)
+mi_theme &lt;- theme(
+  axis.title = element_text(size = 16, face = &#39;bold&#39;, family = &#39;Times&#39;),
+  axis.text = element_text(size = 12, face = &#39;plain&#39;, family = &#39;Times&#39;),
+  legend.text = element_text(face = &#39;plain&#39;, size = 12, family = &#39;Times&#39;),
+  legend.title = element_text(face = &#39;bold&#39;, size = 16, family = &#39;Times&#39;),
+  axis.title.y = element_text(vjust = 1),
+  axis.title.x = element_text(vjust = 0),
+  legend.position = c(.9, .8)
+)
+mi_box &lt;- ggplot(example, aes(trat, chol)) + 
+  geom_boxplot() + 
+  theme_classic() +
+  labs(x = &#39;Tratamiento&#39;, y = &#39;Colesterol (mg./dl.)&#39;, title = &#39;&#39;) +
+  scale_y_continuous(limits = c(120, 260), breaks = seq(120, 260, 20)) +
+  mi_theme
+mi_den &lt;- ggplot(example, aes(colour = trat, x = chol)) + geom_line(stat = &#39;density&#39;) +
+  theme_classic() + scale_x_continuous(limits = c(120, 260), breaks = seq(120, 260, 20)) +
+  labs(x = &#39;Colesterol (mg./dl.)&#39;, y = &#39;Densidad&#39;, title = &#39;&#39;, colour = &#39;&#39;) +
+  mi_theme
+grid.arrange(mi_box, mi_den, nrow = 1)</code></pre>
+<p><img src="/post/knitr_files/figure-html/box.den-1.png" width="960" /></p>
+<p>Sin duda, esto es adictivo. Pero ¿qué tal se ven los gráficos básicos, p. ej., de un ANOVA?<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<pre class="r"><code>mi_aov &lt;- aov(chol ~ trat, example)
+par(mar = c(4, 4, 1, 1), bty = &#39;l&#39;, family = &#39;serif&#39;, mgp = c(2, 0.5, 0), xaxs = &#39;i&#39;, yaxs = &#39;i&#39;)
+layout(matrix(c(1, 2, 1, 2), byrow = T, ncol = 2))
+plot(mi_aov$fitted.values, mi_aov$residuals, xlab = &#39;Valores ajustados&#39;,
+                  ylab = &#39;Residuos&#39;, cex = 1.5, cex.lab = 1.3, col = 4,
+                  xlim = c(150, 215), ylim = c(-60, 60))
+abline(h = 0, lty = 2)
+lines(lowess(mi_aov$fitted.values, mi_aov$residuals), col = 2)
+qqnorm(mi_aov$residuals, xlab = &#39;Cuantiles teóricos&#39;, main = &#39;&#39;, cex = 1.5, 
+                    ylab = &#39;Cuantiles muestrales&#39;, cex.lab = 1.3, col = 4,
+                    xlim = c(-3, 3), ylim = c(-60, 60))
+qqline(mi_aov$residuals, col = 2)
+abline(h = 0, lty = 2)</code></pre>
+<p><img src="/post/knitr_files/figure-html/aov.g-1.png" width="960" /></p>
+<pre class="r"><code>summary(mi_aov)</code></pre>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## trat          2 150867   75433   219.9 &lt;2e-16 ***
+## Residuals   297 101904     343                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Las figuras quedan genial, aunque la impresión de la tabla de ANOVA es bastante cutre. ¿Se puede pasar por <code>kable</code> y mejorarla? Sí, pero previamente hay que hacer algunas modificaciones.</p>
+<pre class="r"><code>mi_aov &lt;- anova(mi_aov)
+colnames(mi_aov) &lt;- c(&#39;Grados de libertad&#39;, &#39;Suma de cuadrados&#39;, &#39;Media de cuadrados&#39;, &#39;Valor F&#39;, &#39;Valor p&#39;)
+rownames(mi_aov) &lt;- c(&#39;Nivel&#39;, &#39;Residuos&#39;)
+kable(mi_aov, digits = 2, caption = &#39;Tabla del ANOVA&#39;)</code></pre>
+<table>
+<caption>(#tab:aov.tab)Tabla del ANOVA</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Grados de libertad</th>
+<th align="right">Suma de cuadrados</th>
+<th align="right">Media de cuadrados</th>
+<th align="right">Valor F</th>
+<th align="right">Valor p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nivel</td>
+<td align="right">2</td>
+<td align="right">150866.6</td>
+<td align="right">75433.29</td>
+<td align="right">219.85</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Residuos</td>
+<td align="right">297</td>
+<td align="right">101904.0</td>
+<td align="right">343.11</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="proximos-pasos" class="section level2">
+<h2>Próximos pasos</h2>
+<p>Ya conoces un poco mejor la forma de trabajar con Markdown en <code>R</code> gracias a <code>knitr</code>. En un próximo artículo veremos cómo configurar algunas opciones de <code>knitr</code> al comienzo del documento, y evitar así estar repitiendo los mismos encabezados una y otra vez. Asimismo, también me gustaría hablar un poquito sobre LaTeX y mostrar un una mínima parte de su potencial a la hora de encarar documentos largos y complejos.</p>
+<p>Por ahora eso es todo. Pasa un buen día. :)</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>He añadido algunas opciones extra en el encabezado de las piezas de código, tales como <code>message = F</code> y <code>warning = F</code>, de manera que se evita la aparición de mensajes que distraen de los datos.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Una forma más sencilla para echar un vistazo rápido a estos gráficos (sin tanta floritura) es con <code>par(mfrow = c(1, 2))</code> seguido de <code>plot(mi.aov, which = c(1, 2))</code>.<a href="#fnref2">↩</a></p></li>
+</ol>
+</div>

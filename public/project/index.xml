@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on Carlos Vergara-Hernández</title>
+    <link>http://carlosvergara.github.io/project/index.xml</link>
+    <description>Recent content in Projects on Carlos Vergara-Hernández</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>es-es</language>
+    <copyright>&amp;copy; 2017 Carlos Vergara-Hernández</copyright>
+    <lastBuildDate>Mon, 13 Mar 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/project/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Paquetes de R</title>
+      <link>http://carlosvergara.github.io/project/R/</link>
+      <pubDate>Mon, 13 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://carlosvergara.github.io/project/R/</guid>
+      <description>
+
+&lt;h2 id=&#34;fisabior&#34;&gt;fisabior&lt;/h2&gt;
+
+&lt;p&gt;Ahora mismo estoy trabajando en un paquete para dar un marco de trabajo común al grupo en el que me incluyo. Aunque hay paquetes que tratan de hacer eso mismo (me viene a la cabeza &lt;code&gt;ProjectTemplate&lt;/code&gt;), la verdad es que no se ajustaba exactamente a lo que estábamos buscando, así que nos animamos a crear un paquete con nuestras milongas. Puedes consultarlo a través de la cuenta institucional de &lt;a href=&#34;https://github.com/fisabio/&#34; target=&#34;_blank&#34;&gt;FISABIO en GitHub&lt;/a&gt; y puedes copiar lo que te dé la real gana o usarlo como y para lo que quieras.&lt;/p&gt;
+
+&lt;h2 id=&#34;este-sitio&#34;&gt;Este sitio&lt;/h2&gt;
+
+&lt;p&gt;¡Sí! Este sitio también está hecho directamente desde &lt;code&gt;R&lt;/code&gt;, gracias al paquete &lt;code&gt;blogdown&lt;/code&gt; y a &lt;a href=&#34;https://gohugo.io/overview/introduction/&#34; target=&#34;_blank&#34;&gt;Hugo&lt;/a&gt;. Para usarlo, primero deberías instalarlo a través del paquete &lt;code&gt;devtools&lt;/code&gt; con la instrucción &lt;code&gt;devtools::install_github(rstudio/blogdown)&lt;/code&gt;. Para crear un sitio que use el mismo tema, puedes usar el comando &lt;code&gt;blogdown::new_site(theme = &amp;quot;gcushen/hugo-academic&amp;quot;)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Al igual que antes, si lo deseas puedes utilizar el material a tu voluntad, el cual está colgado en mi cuenta de &lt;a href=&#34;https://github.com/carlosvergara/carlosvergara.github.io&#34; target=&#34;_blank&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,43 @@
+---
+title: R en Linux
+date: 2015-05-06
+tags: ["R", "RStudio", "Linux"]
+comments: true
+share: true
+draft: true
+---
+
+<!-- BLOGDOWN-HEAD -->
+<!-- /BLOGDOWN-HEAD -->
+
+<!-- BLOGDOWN-BODY-BEFORE -->
+<!-- /BLOGDOWN-BODY-BEFORE -->
+<p>Hola muchachada.</p>
+<p>Hoy la palangana viene repleta de… paquetes de <code>R</code>, y por si fuera poco atractivo para cualquier alma de cántaro, paquetes de <code>R</code> en Linux.</p>
+<p>Resulta que acabo de actualizar unos paquetes de <code>R</code> y se me ha ocurrido escribir un poco al respecto. No me gusta abarcar más de lo que me corresponde, así que solo voy a explicar cómo actualizar el programa de forma automática, y cómo sorteo alguna que otra incomodidad de la instalación y actualización de paquetes</p>
+<div id="instalar-y-actualizar-r-de-forma-automatica" class="section level2">
+<h2>Instalar y actualizar R de forma automática</h2>
+<p>Para instalar o mantener actualizado <code>R</code> de manera automática hay que realizar unos sencillos pasos que dependen de la distro de Linux que estés utilizando. Por ejemplo, si usas, como tantísima gente, Ubuntu, <a href="http://cran.r-project.org/bin/linux/ubuntu/README">tienes unas instrucciones muy claras</a>:</p>
+<ol style="list-style-type: decimal">
+<li>Edita el archivo <code>sources.list</code> con tu editor favorito. En una terminal: <code>sudo atom /etc/apt/sources.list</code>.</li>
+<li>Añade una entrada en el archivo con el URL del <em>mirror</em> de CRAN preferido, mediante <code>deb https://cloud.r-project.org/bin/linux/ubuntu/ xenial/</code>, cambiando <code>xenial</code> por la versión que estés usando (<em>trusty</em>, <em>precise</em>, <em>yakkety</em> o cualquier otro nombre chorra).</li>
+<li>Guarda el documento y ejecuta el clásico <code>sudo apt-get update &amp;&amp; sudo apt-get upgrade</code> si ya tuvieras <code>R</code> instalado, o <code>sudo apt-get install r-base-dev</code> si vas a instalarlo en ese momento (te recomiendo la versión <em>dev</em>).</li>
+<li>Por último, queda añadir la clave para la certificación de paquetes instalados con <code>sudo apt-key adv –keyserver keyserver.ubuntu.com –recv-keys E084DAB9</code>.</li>
+</ol>
+<p>Hay otras distros con un patrón de instalación mucho más sencillo: por ejemplo, ahora mismo soy usuario de una variante de <a href="https://www.archlinux.org/">Arch Linux</a>, y gracias a <a href="https://aur.archlinux.org/">AUR</a> se puede instalar en un segundo. Arch Linux tiene la ventaja de ser una distro <em>Rolling Release</em>, lo que implica que no hay que cambiar de versión cada año o así, reinstalando toda la retahíla de programas una y otra vez.</p>
+</div>
+<div id="instalar-y-actualizar-librerias" class="section level2">
+<h2>Instalar y actualizar librerías</h2>
+<p>Desde que comencé a utilizar Linux me di cuenta de algo que ocurría con las librerías de <code>R</code>, no solo es que haya que identificarse como superusuario a la hora de instalar el propio programa (de forma que las librerías que acompañan a <code>R</code> por defecto se instalan en el directorio <code>/usr/lib/R/library</code>, aunque hay formas de sortear este punto), sino que los paquetes se instalan en plan <em>source</em>, de forma que no viene nada precompilado, incluyendo alguna dependencia de software (por ejemplo, prueba a instalar el paquete <code>rgeos</code> sin más y verás lo que pasa…).</p>
+<p>Respecto al primer punto, en principio esto es una ventaja independientemente de que se trate de una máquina personal o compartida por varios usuarios donde más de uno utilice <code>R</code>. Lo único es que, si quieres actualizar a mano los paquetes y eso incluye a alguno de los paquetes básicos, si se inicia la aplicación sin permisos de superusuario, las librerías se instalarán por defecto en el directorio del usuario que haya abierto la sesión (en principio este será <code>/home/pepitoflores/R/x86_64-pc-linux-gnu-library/version-de-R-que-uses</code>), y a la hora de actualizar las librerías que requieren permisos (las que están instaladas en <code>/usr/lib/R/library</code>), la consola nos devolverá un error. Esto se puede sortear de dos formas:</p>
+<ol style="list-style-type: decimal">
+<li>abriendo <code>R</code> como superusuario y actualizando los paquetes (<code>update.packages()</code>) o,</li>
+<li>esperando a que se actualicen esos paquetes dentro del repositorio que empleamos para instalar el propio <code>R</code>.</li>
+</ol>
+<p>En relación al segundo punto, la verdad es que no hay una salida fácil: solo queda leer la documentación de los paquetes y ver posibles dependencias externas (algo habitual, por ejemplo, con los paquetes de estadística espacial), ver por dónde peta al instalarlo, y buscar e instalar los paquetes necesarios.</p>
+</div>
+<div id="ultimos-apuntes" class="section level2">
+<h2>Últimos apuntes</h2>
+<p>Si trabajas en varios proyectos y te preocupa llevar un control de las librerías necesarias para correr un <em>script</em> y aumentar así el nivel de reproducibilidad, prueba a utilizar la libraría <a href="https://rstudio.github.io/packrat/" title="packrat"><code>packrat</code></a>. Esto viene muy bien para tener un proyecto autosuficiente, con lo que el código que hace seis meses funcionó, hoy también funcionará.</p>
+<p>Por ahora eso es todo. Pasa un buen día. :)</p>
+</div>
