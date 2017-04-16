@@ -4,7 +4,7 @@
     
     
     <url>
-      <loc>http://carlosvergara.github.io/project/R/</loc>
+      <loc>http://carlosvergara.github.io/project/r/</loc>
       <lastmod>2017-03-13T00:00:00+00:00</lastmod>
     </url>
     
@@ -54,6 +54,14 @@
     <url>
       <loc>http://carlosvergara.github.io/post/knitr/</loc>
       <lastmod>2015-05-07T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+      <loc>http://carlosvergara.github.io/post/instalar-r-linux/</loc>
+      <lastmod>2015-05-06T00:00:00+00:00</lastmod>
     </url>
     
   
@@ -120,11 +128,9 @@
     
     <url>
       <loc>http://carlosvergara.github.io/categories/</loc>
+      <lastmod>2015-04-28T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
-    
-  
-    
     
   
     
@@ -141,6 +147,15 @@
     <url>
       <loc>http://carlosvergara.github.io/tags/knitr/</loc>
       <lastmod>2015-05-07T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+      <loc>http://carlosvergara.github.io/tags/linux/</loc>
+      <lastmod>2015-05-06T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -167,15 +182,7 @@
     
     <url>
       <loc>http://carlosvergara.github.io/publication_types/</loc>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-      <loc>http://carlosvergara.github.io/categories/r/</loc>
-      <lastmod>2015-05-07T00:00:00+00:00</lastmod>
+      <lastmod>2015-04-01T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -192,6 +199,15 @@
     
     
     <url>
+      <loc>http://carlosvergara.github.io/categories/r/</loc>
+      <lastmod>2015-05-07T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
       <loc>http://carlosvergara.github.io/tags/r-markdown/</loc>
       <lastmod>2015-05-07T00:00:00+00:00</lastmod>
       <priority>0</priority>
@@ -201,7 +217,17 @@
     
     
     <url>
+      <loc>http://carlosvergara.github.io/tags/rstudio/</loc>
+      <lastmod>2015-05-06T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
       <loc>http://carlosvergara.github.io/tags/</loc>
+      <lastmod>2017-01-01T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     

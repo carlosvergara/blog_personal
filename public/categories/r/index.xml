@@ -2,12 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on Carlos Vergara-Hernández</title>
-    <link>http://carlosvergara.github.io/categories/r/index.xml</link>
+    <link>http://carlosvergara.github.io/categories/r/</link>
     <description>Recent content in R on Carlos Vergara-Hernández</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-es</language>
     <copyright>&amp;copy; 2017 Carlos Vergara-Hernández</copyright>
-    <atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 07 May 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/categories/r/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Informes dinámicos con knitr</title>

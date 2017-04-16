@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Projects on Carlos Vergara-Hernández</title>
-    <link>http://carlosvergara.github.io/project/index.xml</link>
+    <link>http://carlosvergara.github.io/project/</link>
     <description>Recent content in Projects on Carlos Vergara-Hernández</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-es</language>
     <copyright>&amp;copy; 2017 Carlos Vergara-Hernández</copyright>
     <lastBuildDate>Mon, 13 Mar 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/project/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/project/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Paquetes de R</title>
-      <link>http://carlosvergara.github.io/project/R/</link>
+      <link>http://carlosvergara.github.io/project/r/</link>
       <pubDate>Mon, 13 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://carlosvergara.github.io/project/R/</guid>
+      <guid>http://carlosvergara.github.io/project/r/</guid>
       <description>
 
 &lt;h2 id=&#34;fisabior&#34;&gt;fisabior&lt;/h2&gt;

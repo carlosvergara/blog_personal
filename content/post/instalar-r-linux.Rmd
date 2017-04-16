@@ -4,14 +4,14 @@ date: 2015-05-06
 tags: ["R", "RStudio", "Linux"]
 comments: true
 share: true
-draft: true
+draft: false
 ---
 
 Hola muchachada.
 
 Hoy la palangana viene repleta de... paquetes de `R`, y por si fuera poco atractivo para cualquier alma de cántaro, paquetes de `R` en Linux.
 
-Resulta que acabo de actualizar unos paquetes de `R` y se  me ha ocurrido escribir un poco al respecto. No me gusta abarcar más de lo que me corresponde, así que solo voy a explicar cómo actualizar el programa de forma automática, y cómo sorteo alguna que otra incomodidad de la instalación y actualización de paquetes
+Resulta que acabo de actualizar unos paquetes de `R` y se  me ha ocurrido escribir un poco al respecto. No me gusta abarcar más de lo que me corresponde, así que solo voy a explicar cómo actualizar el programa de forma automática, y cómo sorteo alguna que otra incomodidad de la instalación y actualización de paquetes.
 
 ## Instalar y actualizar R de forma automática
 
