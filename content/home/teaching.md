@@ -26,3 +26,5 @@ A lo largo del tiempo he participado a nivel docente en varios cursos oficiales:
     - 34379: Enfermería en la salud infantil y del adolescente.
 - Escuela Valenciana de Estudios de la Salud:
     - [31301350A](http://www.dx.doi.org/10.6084/m9.figshare.821272.v1): PubMed y la gestión bibliográfica.
+
+- [Curso de Investigación Reproducible con R y RStudio](https://fisabio.github.io/investigacion_reproducible/)

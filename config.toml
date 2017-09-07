@@ -1,4 +1,4 @@
-baseurl = "http://carlosvergara.github.io/"
+baseurl = "https://cvergara.netlify.com/"
 title = "Carlos Vergara-Hernández"
 copyright = "&copy; 2017 Carlos Vergara-Hernández"
 theme = "academic"
